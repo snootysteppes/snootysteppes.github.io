@@ -38,6 +38,7 @@
     scrollbar-width: thin;
     scrollbar-color: #ffffff transparent;
     color: white; /* white text */
+    z-index: 1; /* Ensure the rectangle is on top */
   }
   .profile-pic {
     width: 100px;
@@ -47,7 +48,7 @@
     margin: 0 auto;
     position: relative;
     top: -50px;
-    z-index: 1;
+    z-index: 2; /* Position the profile picture above the rectangle */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* mild glow */
   }
   .profile-pic img {
