@@ -25,7 +25,7 @@ header {
 
 /* Header Background Image */
 .header-image {
-    background: url('assets/mountain.jpg') no-repeat center center;
+    background: url('mountain.jpg') no-repeat center center;
     background-size: cover;
     position: absolute;
     top: 0;
