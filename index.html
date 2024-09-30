@@ -29,15 +29,29 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Keep the particles behind the content */
+            z-index: 1; /* Set particles above the mountain image */
+        }
+
+        /* Mountain image background */
+        .mountain-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://th.bing.com/th/id/OIP.3Df1JLR5k7iNChSTuqy7RQHaE9?rs=1&pid=ImgDetMain');
+            background-size: cover;
+            background-position: center;
+            z-index: 0; /* Keep the image behind the particles */
         }
 
         /* Header section */
         header {
             text-align: center;
             padding: 100px 20px;
-            background: rgba(0, 0, 0, 0.6); /* Optional: Darken the background to contrast the text */
             color: #fff;
+            position: relative;
+            z-index: 2; /* Ensure header is above both particles and mountain image */
         }
 
         header h1 {
@@ -73,6 +87,8 @@
             max-width: 1000px;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 2; /* Sections are above background */
+            position: relative;
         }
 
         .section h2 {
@@ -97,10 +113,14 @@
             position: relative;
             bottom: 0;
             width: 100%;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
+
+    <!-- Mountain background image -->
+    <div class="mountain-bg"></div>
 
     <!-- Particle.js container -->
     <div id="particles-js"></div>
@@ -127,7 +147,7 @@
 
     <section id="pricing" class="section">
         <h2>Pricing & Packages</h2>
-        <p class="placeholder">We offer a range of pricing options to suit every adventurer. Our standard 14-day package starts at $35,000 per person, including accommodation, meals, and guided tours. For those seeking a more luxurious experience, we offer a premium package starting at $60,000, which includes upgraded lodging, private guides, and helicopter transportation to Everest Base Camp. Group discounts and customizable packages are also available, ensuring that your journey is tailored to meet your specific needs and preferences. Secure your spot today for an unforgettable Everest adventure!</p>
+        <p class="placeholder">We offer a range of pricing options to suit every adventurer. Our standard 14-day package starts at $3,500 per person, including accommodation, meals, and guided tours. For those seeking a more luxurious experience, we offer a premium package starting at $6,000, which includes upgraded lodging, private guides, and helicopter transportation to Everest Base Camp. Group discounts and customizable packages are also available, ensuring that your journey is tailored to meet your specific needs and preferences. Secure your spot today for an unforgettable Everest adventure!</p>
     </section>
 
     <!-- Footer -->
@@ -140,7 +160,7 @@
         particlesJS("particles-js", {
             "particles": {
                 "number": {
-                    "value": 100,
+                    "value": 200,
                     "density": {
                         "enable": true,
                         "value_area": 800
@@ -161,9 +181,9 @@
                 },
                 "opacity": {
                     "value": 0.5,
-                    "random": false,
+                    "random": true,
                     "anim": {
-                        "enable": false,
+                        "enable": true,
                         "speed": 1,
                         "opacity_min": 0.1,
                         "sync": false
@@ -193,6 +213,7 @@
                     "random": false,
                     "straight": false,
                     "out_mode": "out",
+                    "bounce": false,
                     "attract": {
                         "enable": false,
                         "rotateX": 600,
@@ -205,7 +226,7 @@
                 "events": {
                     "onhover": {
                         "enable": true,
-                        "mode": "repulse"
+                        "mode": "grab"
                     },
                     "onclick": {
                         "enable": true,
