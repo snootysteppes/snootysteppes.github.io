@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Login Page with Mascot</title>
+    <style>
+        :root {
+            --background-light: #f0f0f0;
+            --background-dark: #1f1f1f;
+            --container-light: white;
+            --container-dark: #333;
+            --text-light: #000;
+            --text-dark: #fff;
+            --accent-color: #4CAF50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .login-container {
+            background-color: var(--container-light);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-field {
+            margin: 20px 0;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .mascot {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .mascot .body {
+            width: 100px;
+            height: 100px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .mascot .eye {
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+        }
+
+        .mascot .eye.left {
+            left: 30px;
+        }
+
+        .mascot .eye.right {
+            right: 30px;
+        }
+
+        .mascot .pupil {
+            width: 8px;
+            height: 8px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+        }
+
+        .mascot .hand {
+            width: 15px;
+            height: 30px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 60px;
+        }
+
+        .mascot .hand.left {
+            left: 20px;
+        }
+
+        .mascot .hand.right {
+            right: 20px;
+        }
+
+        .mascot .hand-cover {
+            display: none;
+        }
+
+        .login-container button {
+            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #3e8e41;
+        }
+
+        /* Light/dark mode toggle switch */
+        .switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        .dark-mode .login-container {
+            background-color: var(--container-dark);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .input-field {
+            background-color: #555;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="switch-container">
+    <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<div class="login-container">
+    <div class="mascot">
+        <div class="body">
+            <div class="eye left">
+                <div class="pupil" id="leftPupil"></div>
+            </div>
+            <div class="eye right">
+                <div class="pupil" id="rightPupil"></div>
+            </div>
+            <div class="hand left" id="leftHand"></div>
+            <div class="hand right" id="rightHand"></div>
+        </div>
+    </div>
+    <form>
+        <input type="text" id="username" class="input-field" placeholder="Username" autocomplete="off"><br>
+        <input type="password" id="password" class="input-field" placeholder="Password" autocomplete="off"><br>
+        <button type="button">Login</button>
+    </form>
+</div>
+
+<script>
+    const leftPupil = document.getElementById('leftPupil');
+    const rightPupil = document.getElementById('rightPupil');
+    const passwordInput = document.getElementById('password');
+    const leftHand = document.getElementById('leftHand');
+    const rightHand = document.getElementById('rightHand');
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    const inputFields = document.querySelectorAll('.input-field');
+
+    // Mascot eyes follow the input field
+    inputFields.forEach(input => {
+        input.addEventListener('focus', () => {
+            const inputRect = input.getBoundingClientRect();
+            const focusPoint = (inputRect.left + inputRect.right) / 2;
+
+            document.addEventListener('mousemove', (e) => {
+                let distance = e.pageX - focusPoint;
+                if (distance > 15) distance = 15;
+                if (distance < -15) distance = -15;
+
+                leftPupil.style.transform = `translateX(${distance}px)`;
+                rightPupil.style.transform = `translateX(${distance}px)`;
+            });
+        });
+    });
+
+    // Cover eyes when typing password
+    passwordInput.addEventListener('focus', () => {
+        leftHand.classList.add('hand-cover');
+        rightHand.classList.add('hand-cover');
+    });
+
+    passwordInput.addEventListener('blur', () => {
+        leftHand.classList.remove('hand-cover');
+        rightHand.classList.remove('hand-cover');
+    });
+
+    // Toggle between light and dark mode
+    themeToggle.addEventListener('change', () => {
+        body.classList.toggle('dark-mode');
+    });
+</script>
+
+</body>
+</html>
