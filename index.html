@@ -108,23 +108,20 @@
             opacity: 0; /* Start invisible */
             transform: translateY(50px); /* Start lower */
             transition: opacity 0.6s ease, transform 0.6s ease; /* Smooth transition */
-        }
-
-        /* Class to apply the swoosh animation */
-        .section.visible {
-            opacity: 1; /* Visible */
-            transform: translateY(0); /* Move to normal position */
-            animation: swoosh 0.6s forwards; /* Trigger the swoosh animation */
-        }
-
-        /* Section Styles */
-        .section {
             padding: 60px 20px;
             max-width: 800px;
             margin: 40px auto; /* Spacing around sections */
             background: rgba(255, 255, 255, 0.9); /* White with transparency */
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hover effect for sections */
+        .section:hover {
+            transform: scale(1.05); /* Slightly enlarge the section */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Add a stronger shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+            border: 2px solid #007BFF; /* Optional: Add a border on hover */
         }
 
         h2 {
@@ -225,21 +222,17 @@
             );
         }
 
-        // Function to add the 'visible' class to sections in viewport
-        function revealSections() {
+        // Add event listener to check when scrolling
+        window.addEventListener('scroll', function () {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
                 if (isInViewport(section)) {
-                    section.classList.add('visible');
+                    section.style.opacity = '1'; // Fade in
+                    section.style.transform = 'translateY(0)'; // Swoosh into place
                 }
             });
-        }
-
-        // Event listeners
-        window.addEventListener('scroll', revealSections);
-        window.addEventListener('resize', revealSections);
-        document.addEventListener('DOMContentLoaded', revealSections); // For initial check on load
+        });
     </script>
-
 </body>
 </html>
+
