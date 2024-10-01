@@ -57,19 +57,23 @@ nav ul li a:hover {
   color: #f4a261;
 }
 
-/* Hero Section */
+/* Parallax Hero Section */
 #hero {
-  background-image: url('salon.jpg');
-  background-size: cover;
-  background-position: center;
+  position: relative;
   height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: #fff;
-  position: relative;
   margin-top: 4rem;
+}
+
+.parallax {
+  background-image: url('salon.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
 }
 
 .hero-text h1 {
@@ -137,64 +141,4 @@ nav ul li a:hover {
 
 .service-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* Team Section */
-#team {
-  padding: 4rem 2rem;
-  text-align: center;
-  background-color: #f4f4f4;
-}
-
-.team-container {
-  display: flex;
-  justify-content: space-around;
-  animation: fadeInUp 2.5s ease-out;
-}
-
-.team-member {
-  text-align: center;
-}
-
-.team-member img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.team-member img:hover {
-  transform: scale(1.1);
-}
-
-/* Booking Section */
-#booking {
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-#booking-form input,
-#booking-form select {
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.primary-btn {
-  width: 100%;
-  display: block;
-  margin-top: 1rem;
-}
-
-footer {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 1rem 0;
-  margin-top: 4rem;
-}
+  box-shadow: 0px
