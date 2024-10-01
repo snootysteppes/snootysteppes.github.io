@@ -44,6 +44,7 @@
             right: 0;
             bottom: 0;
             z-index: 1; /* Behind particles */
+            transform: translateZ(0); /* Enable hardware acceleration */
         }
 
         /* Particle.js Container */
@@ -62,6 +63,7 @@
             z-index: 3; /* On top of both image and particles */
             padding: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow for better readability */
+            transform: translateZ(0); /* Enable hardware acceleration */
         }
 
         /* Main Title */
@@ -360,8 +362,13 @@
                 });
             });
         });
+        
+        // Parallax Effect on Scroll
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const headerImage = document.querySelector('.header-image');
+            headerImage.style.transform = 'translateY(' + (scrollPosition * 0.5) + 'px)';
+        });
     </script>
 </body>
 </html>
-
-
