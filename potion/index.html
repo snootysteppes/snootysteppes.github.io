@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Potion Master</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c2c54;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5rem;
+        }
+        #ingredient-section, #cauldron-section, #potion-section {
+            margin: 20px;
+            padding: 10px;
+        }
+        .ingredients {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .ingredient {
+            background-color: #8c7ae6;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            width: 150px;
+        }
+        #cauldron {
+            width: 300px;
+            height: 200px;
+            background-color: #44bd32;
+            margin: 0 auto;
+            border: 2px dashed white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        #potion-list {
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Hogwarts Potion Master</h1>
+    </header>
+
+    <div id="ingredient-section">
+        <h2>Ingredients</h2>
+        <div class="ingredients">
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="unicorn-hair">Unicorn Hair</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="bat-spleen">Bat Spleen</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="dragon-scale">Dragon Scale</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="gillyweed">Gillyweed</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="acromantula-venom">Acromantula Venom</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="mandrake-root">Mandrake Root</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="phoenix-feather">Phoenix Feather</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="basilisk-fang">Basilisk Fang</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="wolfsbane">Wolfsbane</div>
+            <div class="ingredient" draggable="true" ondragstart="drag(event)" id="flobberworm-mucus">Flobberworm Mucus</div>
+            <!-- Add more ingredients as needed -->
+        </div>
+    </div>
+
+    <div id="cauldron-section">
+        <h2>Your Cauldron</h2>
+        <div id="cauldron" ondrop="brewPotion(event)" ondragover="allowDrop(event)">
+            <p>Drag ingredients here to brew!</p>
+        </div>
+    </div>
+
+    <div id="potion-section">
+        <h2>Potions Discovered</h2>
+        <ul id="potion-list"></ul>
+    </div>
+
+    <script>
+        let ingredientsInCauldron = [];
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function brewPotion(ev) {
+            ev.preventDefault();
+            let ingredientId = ev.dataTransfer.getData("text");
+            ingredientsInCauldron.push(ingredientId);
+
+            if (ingredientsInCauldron.length === 2) {
+                let potion = mixPotion(ingredientsInCauldron[0], ingredientsInCauldron[1]);
+                document.getElementById("potion-list").innerHTML += `<li><strong>${potion.name}:</strong> ${potion.description}</li>`;
+                ingredientsInCauldron = []; // reset for next round
+            }
+        }
+
+        function mixPotion(ingredient1, ingredient2) {
+            const potionCombinations = {
+                // Famous Potions
+                "unicorn-hair_bat-spleen": {name: "Polyjuice Potion", description: "Allows the drinker to assume the form of someone else. Mentioned in Book 2, 4 and 7"},
+                "dragon-scale_gillyweed": {name: "Felix Felicis", description: "A potion that makes the drinker lucky for a period of time. Mentioned in Book 6"},
+                "unicorn-hair_gillyweed": {name: "Amortentia", description: "The most powerful love potion in existence. Mentioned in Book 6"},
+                "bat-spleen_dragon-scale": {name: "Draught of Living Death", description: "A potion that induces a death-like sleep."},
+                "acromantula-venom_mandrake-root": {name: "Wolfsbane Potion", description: "Allows a werewolf to retain human control during a full moon. Mentioned in Book 3"},
+                
+                // Healing Potions
+                "phoenix-feather_flobberworm-mucus": {name: "Essence of Dittany", description: "Heals even deep wounds quickly. Mentioned in Book 7"},
+                "mandrake-root_basilisk-fang": {name: "Mandrake Restorative Draught", description: "Restores people who have been petrified. Mentioned in Book 2"},
+                "acromantula-venom_basilisk-fang": {name: "Antidote to Common Poisons", description: "Cures most magical poisons."},
+                
+                // Transformation Potions
+                "phoenix-feather_gillyweed": {name: "Invisibility Potion", description: "Grants temporary invisibility."},
+                "basilisk-fang_dragon-scale": {name: "Animagus Potion", description: "Allows the drinker to transform into their Animagus form."},
+                
+                // Strength and Protection Potions
+                "acromantula-venom_wolfsbane": {name: "Elixir to Induce Euphoria", description: "Induces feelings of happiness and elation."},
+                "gillyweed_mandrake-root": {name: "Strengthening Solution", description: "Temporarily enhances physical strength."},
+                "flobberworm-mucus_wolfsbane": {name: "Protego Potion", description: "A powerful shielding potion that enhances defensive magic."},
+                
+                // Special Potions
+                "phoenix-feather_acromantula-venom": {name: "Veritaserum", description: "Forces the drinker to tell the truth. Mentioned in Book 4, 5 and 6"},
+                "basilisk-fang_gillyweed": {name: "Gillywater", description: "Allows the drinker to breathe underwater."},
+                
+                // Dark Potions
+                "bat-spleen_acromantula-venom": {name: "Potion of Despair", description: "Induces fear, despair, and hopelessness in the drinker."},
+                "dragon-scale_basilisk-fang": {name: "Curse of the Serpent", description: "A dark potion that infects the drinker with a deadly curse."},
+                
+                // Unknown/Uncommon Potions
+                "phoenix-feather_bat-spleen": {name: "Philosopher's Stone Elixir", description: "Grants immortality to the drinker."},
+                "flobberworm-mucus_mandrake-root": {name: "Pompion Potion", description: "Causes the drinker's head to turn into a pumpkin."},
+                "gillyweed_acromantula-venom": {name: "Babbling Beverage", description: "Causes the drinker to babble nonsense. Mentioned in Book 5"},
+
+                // Add more potions here as needed...
+            };
+
+            const combination1 = `${ingredient1}_${ingredient2}`;
+            const combination2 = `${ingredient2}_${ingredient1}`;
+            
+            return potionCombinations[combination1] || potionCombinations[combination2] || {name: "Unknown Potion", description: "This combination doesn't produce any known potion."};
+        }
+
+    </script>
+</body>
+</html>
