@@ -91,6 +91,8 @@
             border-radius: 50%;
             position: absolute;
             top: 3px;
+            left: 4px;
+            transition: transform 0.1s ease;
         }
 
         .mascot .hand {
@@ -100,6 +102,7 @@
             border-radius: 50%;
             position: absolute;
             top: 60px;
+            transition: top 0.3s ease, transform 0.3s ease;
         }
 
         .mascot .hand.left {
@@ -110,8 +113,13 @@
             right: 20px;
         }
 
-        .mascot .hand-cover {
-            display: none;
+        .hand-cover {
+            top: 20px;
+            transform: rotate(-30deg);
+        }
+
+        .hand.right.hand-cover {
+            transform: rotate(30deg);
         }
 
         .login-container button {
@@ -244,13 +252,21 @@
             const inputRect = input.getBoundingClientRect();
             const focusPoint = (inputRect.left + inputRect.right) / 2;
 
-            document.addEventListener('mousemove', (e) => {
-                let distance = e.pageX - focusPoint;
-                if (distance > 15) distance = 15;
-                if (distance < -15) distance = -15;
+            const handleMouseMove = (e) => {
+                let distance = (e.pageX - focusPoint) / 10;
+                if (distance > 6) distance = 6;
+                if (distance < -6) distance = -6;
 
                 leftPupil.style.transform = `translateX(${distance}px)`;
                 rightPupil.style.transform = `translateX(${distance}px)`;
+            };
+
+            document.addEventListener('mousemove', handleMouseMove);
+
+            input.addEventListener('blur', () => {
+                document.removeEventListener('mousemove', handleMouseMove);
+                leftPupil.style.transform = `translateX(0)`;
+                rightPupil.style.transform = `translateX(0)`;
             });
         });
     });
@@ -266,10 +282,18 @@
         rightHand.classList.remove('hand-cover');
     });
 
-    // Toggle between light and dark mode
+    // Toggle between light and dark mode with theme persistence
     themeToggle.addEventListener('change', () => {
-        body.classList.toggle('dark-mode');
+        const isDarkMode = body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     });
+
+    // On page load, check saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        themeToggle.checked = true;
+    }
 </script>
 
 </body>
