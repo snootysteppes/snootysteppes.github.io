@@ -2,120 +2,177 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>snooty 🎩</title>
-  </head>
-  <body>
-    <header>
-      <h1>snootysteppes</h1>
-      <h4>uk | i like turtles | professional sleeper 💤</h4>
-    </header>
-
-    <div class="columns">
-      <div class="panel">
-        <strong>main</strong><br>
-        <a href="articles/article0.html">blog posts</a><br><br>
-
-        <strong>places</strong><br>
-        <a href="https://github.com/snootysteppes" target="_blank">github repos</a><br>
-        <a href="mailto:peterloisgriffinstewie@gmail.com">gmail contact</a><br><br>
-
-        <strong>sites</strong><br>
-        <a href="mount/index.html">Mt Everest Brochure</a><br>
-        <a href="login/index.html">Login Design</a><br>
-
-        <strong>games</strong><br>
-        <a href="https://schoolworkhelper.netlify.app">schoolworkhelper</a><br>
-        <a href="potion/">potter potions</a><br>
-
-        <strong>misc</strong><br>
-        <a href="https://github.com/snootysteppes/pressurewashr">pressurewashr</a><br>
-        <a href="https://github.com/snootysteppes/Py2ExeDumper">py2exedumper</a><br>
-      </div>
-
-      <div class="content">
-        <p>hithere.</p>
-      </div>
-    </div>
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-      /* General dark theme colors */
-      :root {
-        --background-color: #1e1e1e;
-        --panel-color: #252525;
-        --text-color: #f0f0f0;
-        --link-color: #8ab4f8;
-        --link-hover-color: #bb86fc;
-        --border-color: #444;
-        --header-border-color: #ffffff;
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
       body {
-        background-color: var(--background-color);
-        color: var(--text-color);
-        margin: 0;
-        font-family: monospace;
-      }
-
-      header {
-        border-color: var(--header-border-color);
-        border-bottom-width: 5px;
-        border-bottom-style: solid;
+        background: linear-gradient(135deg, #f7bbfc, #d8f8ff);
+        font-family: 'Poppins', sans-serif;
         display: flex;
-        height: 9vh;
-        padding: 0 2vw;
-      }
-
-      h1 {
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
         margin: 0;
-        padding: 0;
-        font-size: 2em;
       }
 
-      h4 {
-        margin: 0;
-        margin-left: 2vw;
-        font-size: 1em;
-        color: #bbbbbb;
+      .card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+        padding: 2em;
+        text-align: center;
       }
 
-      .columns {
+      .card h1 {
+        color: #ff61a6;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .card p {
+        color: #6c6c6c;
+        margin-bottom: 20px;
+      }
+
+      nav {
         display: flex;
-        height: 90vh;
+        justify-content: center;
+        margin-bottom: 20px;
       }
 
-      .panel {
-        background-color: var(--panel-color);
-        border-right: 3px solid var(--border-color);
-        padding: 2%;
-        width: 20%;
-        box-sizing: border-box;
+      nav button {
+        background-color: #ff61a6;
+        border: none;
+        border-radius: 20px;
+        color: white;
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
       }
 
-      strong {
-        font-size: 110%;
-        color: #bbbbbb;
+      nav button:hover {
+        background-color: #ff88c2;
       }
 
-      a {
-        color: var(--link-color);
+      nav button.active {
+        background-color: #ff88c2;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .content-section {
+        text-align: left;
+      }
+
+      .content-section strong {
+        font-size: 1.1em;
+        color: #ff61a6;
+        display: block;
+        margin: 20px 0 10px;
+      }
+
+      .content-section a {
+        color: #ff61a6;
         text-decoration: none;
         display: block;
         margin: 5px 0;
+        transition: color 0.3s ease;
       }
 
-      a:hover {
-        color: var(--link-hover-color);
+      .content-section a:hover {
+        color: #ff88c2;
       }
 
-      .content {
-        padding: 2%;
-        width: 80%;
-        box-sizing: border-box;
-        background-color: var(--background-color);
-        color: var(--text-color);
+      footer {
+        margin-top: 20px;
+        color: #6c6c6c;
       }
+    </style>
+  </head>
+  <body>
 
-      .content p {
-        font-size: 1.2em;
-        text-align: center;
-        color: #bbbb
+    <div class="card">
+      <h1>snootysteppes</h1>
+      <p>uk | i like turtles | professional sleeper 💤</p>
+
+      <nav>
+        <button class="tab-button active" data-tab="about">About</button>
+        <button class="tab-button" data-tab="skills">Skills</button>
+        <button class="tab-button" data-tab="projects">Projects</button>
+        <button class="tab-button" data-tab="anime">Animes</button>
+      </nav>
+
+      <div id="about" class="tab-content active">
+        <p>Hi there, I’m a relaxed person who loves turtles and talking about life experiences. 💼</p>
+      </div>
+
+      <div id="skills" class="tab-content">
+        <p>Skills in web development, motion detection, and more.</p>
+      </div>
+
+      <div id="projects" class="tab-content">
+        <div class="content-section">
+          <strong>Main</strong>
+          <a href="articles/article0.html">Blog Posts</a>
+
+          <strong>Places</strong>
+          <a href="https://github.com/snootysteppes" target="_blank">GitHub Repos</a>
+          <a href="mailto:peterloisgriffinstewie@gmail.com">Gmail Contact</a>
+
+          <strong>Sites</strong>
+          <a href="mount/index.html">Mt Everest Brochure</a>
+          <a href="login/index.html">Login Design</a>
+
+          <strong>Games</strong>
+          <a href="https://schoolworkhelper.netlify.app" target="_blank">Schoolwork Helper</a>
+          <a href="potion/">Potter Potions</a>
+
+          <strong>Misc</strong>
+          <a href="https://github.com/snootysteppes/pressurewashr" target="_blank">Pressure Washr</a>
+          <a href="https://github.com/snootysteppes/Py2ExeDumper" target="_blank">Py2ExeDumper</a>
+        </div>
+      </div>
+
+      <div id="anime" class="tab-content">
+        <p>Favorite Anime: Attack on Titan, Dream: A Hungarian anime site 🎌</p>
+      </div>
+
+      <footer>
+        <p>© 2024 snootysteppes | made with 💖</p>
+      </footer>
+    </div>
+
+    <script>
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class from all buttons and contents
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+
+          // Add active class to the clicked button and corresponding content
+          button.classList.add('active');
+          document.getElementById(button.dataset.tab).classList.add('active');
+        });
+      });
+    </script>
+  </body>
+</html>
