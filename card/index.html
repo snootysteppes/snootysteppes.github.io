@@ -142,6 +142,8 @@
 
     // Show the first input group
     document.getElementById('cardNumberGroup').style.display = 'block';
+    document.getElementById('cardNumberGroup').style.opacity = '1';
+    document.getElementById('cardNumberGroup').style.transform = 'translateY(0)'; // Set for animation
 
     // Function to show the next input field
     function showNextInput(currentInputId, nextGroupId) {
@@ -153,6 +155,7 @@
                 nextGroup.style.display = 'block';
                 nextGroup.style.opacity = '1';
                 nextGroup.style.transform = 'translateY(0)'; // Reset position for animation
+                nextGroup.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
                 currentInput.removeEventListener('input', arguments.callee); // Remove listener after showing next input
             }
         });
