@@ -101,16 +101,16 @@
     <h2>Enter Card Details</h2>
     
     <div class="input-group" id="cardNumberGroup">
-        <input type="text" id="cardNumber" placeholder="🪙 Card Number" required>
+        <input type="text" id="cardNumber" placeholder="🪙 Card Number" required maxlength="19" oninput="formatCardNumber(this)">
     </div>
     <div class="input-group" id="nameGroup">
         <input type="text" id="cardName" placeholder="👤 Name on Card" required>
     </div>
     <div class="input-group" id="expiryGroup">
-        <input type="text" id="expiryDate" placeholder="📅 Expiry Date (MM/YY)" required>
+        <input type="text" id="expiryDate" placeholder="📅 Expiry Date (MM/YY)" required maxlength="5" oninput="formatExpiryDate(this)">
     </div>
     <div class="input-group" id="cvvGroup">
-        <input type="text" id="cvv" placeholder="🔒 CVV" required>
+        <input type="text" id="cvv" placeholder="🔒 CVV" required maxlength="4" oninput="validateNumericInput(this)">
     </div>
 
     <!-- Hidden until needed -->
@@ -148,6 +148,49 @@
     document.getElementById('cardNumberGroup').style.opacity = '1';
     document.getElementById('cardNumberGroup').style.transform = 'translateY(0)'; // Set for animation
 
+    // Function to format card number input
+    function formatCardNumber(input) {
+        // Remove all non-digit characters
+        let value = input.value.replace(/\D/g, '');
+
+        // Format into groups of 4 digits
+        input.value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        
+        // Show the next input if complete
+        if (value.length === 16) {
+            document.getElementById('nameGroup').style.display = 'block';
+            document.getElementById('nameGroup').style.opacity = '1';
+            document.getElementById('nameGroup').style.transform = 'translateY(0)'; // Reset position for animation
+            document.getElementById('nameGroup').style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
+        }
+    }
+
+    // Function to format expiry date input
+    function formatExpiryDate(input) {
+        // Remove all non-digit characters
+        let value = input.value.replace(/\D/g, '');
+
+        // Format MM/YY
+        if (value.length > 2) {
+            input.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        } else {
+            input.value = value;
+        }
+        
+        // Show the next input if complete
+        if (value.length === 4) {
+            document.getElementById('cvvGroup').style.display = 'block';
+            document.getElementById('cvvGroup').style.opacity = '1';
+            document.getElementById('cvvGroup').style.transform = 'translateY(0)'; // Reset position for animation
+            document.getElementById('cvvGroup').style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
+        }
+    }
+
+    // Function to restrict input to numeric only
+    function validateNumericInput(input) {
+        input.value = input.value.replace(/\D/g, ''); // Remove all non-numeric characters
+    }
+
     // Function to show the next input field
     function showNextInput(currentInputId, nextGroupId) {
         const currentInput = document.getElementById(currentInputId);
@@ -167,8 +210,7 @@
     // Setup input groups
     showNextInput('cardNumber', 'nameGroup');
     showNextInput('cardName', 'expiryGroup');
-    showNextInput('expiryDate', 'cvvGroup');
-
+    
     // Show the billing address section after CVV is entered
     document.getElementById('cvv').addEventListener('input', function() {
         if (this.value.trim() !== '') {
