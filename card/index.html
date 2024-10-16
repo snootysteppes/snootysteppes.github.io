@@ -112,23 +112,26 @@
     <div class="input-group" id="cvvGroup">
         <input type="text" id="cvv" placeholder="🔒 CVV" required>
     </div>
-    
-    <h3>Billing Address</h3>
-    
-    <div class="input-group" id="addressGroup">
-        <input type="text" id="streetAddress" placeholder="🏠 Street Address" required>
-    </div>
-    <div class="input-group" id="cityGroup">
-        <input type="text" id="city" placeholder="🌆 City" required>
-    </div>
-    <div class="input-group" id="stateGroup">
-        <input type="text" id="state" placeholder="📍 State/Province" required>
-    </div>
-    <div class="input-group" id="zipGroup">
-        <input type="text" id="zip" placeholder="📮 Zip/Postal Code" required>
-    </div>
-    <div class="input-group" id="countryGroup">
-        <input type="text" id="country" placeholder="🌍 Country" required>
+
+    <!-- Hidden until needed -->
+    <div id="billingAddressSection" style="display: none;">
+        <h3>Billing Address</h3>
+        
+        <div class="input-group" id="addressGroup">
+            <input type="text" id="streetAddress" placeholder="🏠 Street Address" required>
+        </div>
+        <div class="input-group" id="cityGroup">
+            <input type="text" id="city" placeholder="🌆 City" required>
+        </div>
+        <div class="input-group" id="stateGroup">
+            <input type="text" id="state" placeholder="📍 State/Province" required>
+        </div>
+        <div class="input-group" id="zipGroup">
+            <input type="text" id="zip" placeholder="📮 Zip/Postal Code" required>
+        </div>
+        <div class="input-group" id="countryGroup">
+            <input type="text" id="country" placeholder="🌍 Country" required>
+        </div>
     </div>
     
     <button type="submit" id="submitBtn" style="display: none;">Submit</button>
@@ -165,11 +168,21 @@
     showNextInput('cardNumber', 'nameGroup');
     showNextInput('cardName', 'expiryGroup');
     showNextInput('expiryDate', 'cvvGroup');
-    showNextInput('cvv', 'addressGroup');
-    showNextInput('streetAddress', 'cityGroup');
-    showNextInput('city', 'stateGroup');
-    showNextInput('state', 'zipGroup');
-    showNextInput('zip', 'countryGroup');
+
+    // Show the billing address section after CVV is entered
+    document.getElementById('cvv').addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            document.getElementById('billingAddressSection').style.display = 'block';
+            document.getElementById('addressGroup').style.display = 'block';
+            document.getElementById('addressGroup').style.opacity = '1';
+            document.getElementById('addressGroup').style.transform = 'translateY(0)'; // Reset position for animation
+            document.getElementById('addressGroup').style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
+            showNextInput('streetAddress', 'cityGroup');
+            showNextInput('city', 'stateGroup');
+            showNextInput('state', 'zipGroup');
+            showNextInput('zip', 'countryGroup');
+        }
+    });
 
     // Show submit button after the last input
     document.getElementById('country').addEventListener('input', function() {
