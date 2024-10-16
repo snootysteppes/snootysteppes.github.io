@@ -33,9 +33,12 @@
             background: white;
             border-radius: 15px;
             padding: 20px;
-            width: 350px;
+            width: 400px; /* Increased width */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             z-index: 2;
+            opacity: 0; /* Initial opacity for animation */
+            transform: translateY(-20px); /* Initial position for animation */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
         }
 
         h2 {
@@ -46,6 +49,9 @@
         .input-group {
             margin-bottom: 15px;
             display: none; /* Initially hide input groups */
+            opacity: 0; /* Initial opacity for animation */
+            transform: translateY(-10px); /* Initial position for animation */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
         }
 
         input {
@@ -128,6 +134,11 @@
 </div>
 
 <script>
+    // Show the popup with animation
+    const popup = document.querySelector('.popup');
+    popup.style.opacity = '1';
+    popup.style.transform = 'translateY(0)';
+
     // Show the first input group
     document.getElementById('cardNumberGroup').style.display = 'block';
 
@@ -139,6 +150,8 @@
         currentInput.addEventListener('input', function() {
             if (currentInput.value.trim() !== '') {
                 nextGroup.style.display = 'block';
+                nextGroup.style.opacity = '1';
+                nextGroup.style.transform = 'translateY(0)'; // Reset position for animation
                 currentInput.removeEventListener('input', arguments.callee); // Remove listener after showing next input
             }
         });
