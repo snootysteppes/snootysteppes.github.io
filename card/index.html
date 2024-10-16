@@ -41,7 +41,7 @@
             transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
         }
 
-        h2 {
+        h2, h3 {
             margin: 0 0 20px 0;
             text-align: center;
         }
@@ -90,13 +90,29 @@
             font-size: 20px;
             margin-right: 8px;
         }
+
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .confirmation {
+            display: none;
+            text-align: center;
+        }
+
+        .confirmation p {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
 
 <div class="blur-background"></div>
 
-<div class="popup">
+<div class="popup" id="paymentPopup">
     <span class="close" onclick="closePopup()">✖</span>
     <h2>Enter Card Details</h2>
     
@@ -134,7 +150,17 @@
         </div>
     </div>
     
-    <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+    <button type="submit" id="submitBtn">Submit</button>
+
+    <div class="loading" id="loading">
+        <h2>Processing...</h2>
+    </div>
+
+    <div class="confirmation" id="confirmation">
+        <h2>Payment Processed!</h2>
+        <p id="orderId"></p>
+        <p id="orderDetails"></p>
+    </div>
 </div>
 
 <script>
@@ -155,13 +181,12 @@
 
         // Format into groups of 4 digits
         input.value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-        
+
         // Show the next input if complete
         if (value.length === 16) {
             document.getElementById('nameGroup').style.display = 'block';
             document.getElementById('nameGroup').style.opacity = '1';
             document.getElementById('nameGroup').style.transform = 'translateY(0)'; // Reset position for animation
-            document.getElementById('nameGroup').style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
         }
     }
 
@@ -182,7 +207,6 @@
             document.getElementById('cvvGroup').style.display = 'block';
             document.getElementById('cvvGroup').style.opacity = '1';
             document.getElementById('cvvGroup').style.transform = 'translateY(0)'; // Reset position for animation
-            document.getElementById('cvvGroup').style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
         }
     }
 
@@ -201,7 +225,6 @@
                 nextGroup.style.display = 'block';
                 nextGroup.style.opacity = '1';
                 nextGroup.style.transform = 'translateY(0)'; // Reset position for animation
-                nextGroup.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
                 currentInput.removeEventListener('input', arguments.callee); // Remove listener after showing next input
             }
         });
@@ -210,15 +233,13 @@
     // Setup input groups
     showNextInput('cardNumber', 'nameGroup');
     showNextInput('cardName', 'expiryGroup');
-    
+
     // Show the billing address section after CVV is entered
     document.getElementById('cvv').addEventListener('input', function() {
         if (this.value.trim() !== '') {
             document.getElementById('billingAddressSection').style.display = 'block';
-            document.getElementById('addressGroup').style.display = 'block';
-            document.getElementById('addressGroup').style.opacity = '1';
-            document.getElementById('addressGroup').style.transform = 'translateY(0)'; // Reset position for animation
-            document.getElementById('addressGroup').style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Smooth transition
+            document.getElementById('billingAddressSection').style.opacity = '1';
+            document.getElementById('billingAddressSection').style.transform = 'translateY(0)'; // Reset position for animation
             showNextInput('streetAddress', 'cityGroup');
             showNextInput('city', 'stateGroup');
             showNextInput('state', 'zipGroup');
@@ -231,6 +252,36 @@
         if (this.value.trim() !== '') {
             document.getElementById('submitBtn').style.display = 'block';
         }
+    });
+
+    // Handle form submission
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        // Show loading state
+        document.getElementById('loading').style.display = 'flex';
+        document.getElementById('paymentPopup').style.display = 'none'; // Hide payment popup
+
+        // Simulate processing time
+        setTimeout(function() {
+            // Generate random order ID
+            const orderId = 'ORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, ''); // Remove spaces for last 4 digits
+            const lastFourDigits = cardNumber.slice(-4);
+            const streetAddress = document.getElementById('streetAddress').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zip = document.getElementById('zip').value;
+            const country = document.getElementById('country').value;
+
+            // Show confirmation screen
+            document.getElementById('confirmation').style.display = 'block';
+            document.getElementById('orderId').innerText = 'Order ID: ' + orderId;
+            document.getElementById('orderDetails').innerText = `
+                Address: ${streetAddress}, ${city}, ${state}, ${zip}, ${country}
+                Last 4 Digits: ${lastFourDigits}
+            `;
+
+            document.getElementById('loading').style.display = 'none'; // Hide loading
+        }, 3000); // Simulated delay
     });
 
     // Close popup function
