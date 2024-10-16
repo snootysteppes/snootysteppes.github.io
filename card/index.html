@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Details Popup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+        }
+
+        .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        .popup {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        h2 {
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: none; /* Initially hide input groups */
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .close {
+            display: block;
+            text-align: right;
+            font-size: 18px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .emoji {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="blur-background"></div>
+
+<div class="popup">
+    <span class="close" onclick="closePopup()">✖</span>
+    <h2>Enter Card Details</h2>
+    
+    <div class="input-group" id="cardNumberGroup">
+        <input type="text" id="cardNumber" placeholder="🪙 Card Number" required>
+    </div>
+    <div class="input-group" id="nameGroup">
+        <input type="text" id="cardName" placeholder="👤 Name on Card" required>
+    </div>
+    <div class="input-group" id="expiryGroup">
+        <input type="text" id="expiryDate" placeholder="📅 Expiry Date (MM/YY)" required>
+    </div>
+    <div class="input-group" id="cvvGroup">
+        <input type="text" id="cvv" placeholder="🔒 CVV" required>
+    </div>
+    
+    <h3>Billing Address</h3>
+    
+    <div class="input-group" id="addressGroup">
+        <input type="text" id="streetAddress" placeholder="🏠 Street Address" required>
+    </div>
+    <div class="input-group" id="cityGroup">
+        <input type="text" id="city" placeholder="🌆 City" required>
+    </div>
+    <div class="input-group" id="stateGroup">
+        <input type="text" id="state" placeholder="📍 State/Province" required>
+    </div>
+    <div class="input-group" id="zipGroup">
+        <input type="text" id="zip" placeholder="📮 Zip/Postal Code" required>
+    </div>
+    <div class="input-group" id="countryGroup">
+        <input type="text" id="country" placeholder="🌍 Country" required>
+    </div>
+    
+    <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+</div>
+
+<script>
+    // Show the first input group
+    document.getElementById('cardNumberGroup').style.display = 'block';
+
+    // Function to show the next input field
+    function showNextInput(currentInputId, nextGroupId) {
+        const currentInput = document.getElementById(currentInputId);
+        const nextGroup = document.getElementById(nextGroupId);
+
+        currentInput.addEventListener('input', function() {
+            if (currentInput.value.trim() !== '') {
+                nextGroup.style.display = 'block';
+                currentInput.removeEventListener('input', arguments.callee); // Remove listener after showing next input
+            }
+        });
+    }
+
+    // Setup input groups
+    showNextInput('cardNumber', 'nameGroup');
+    showNextInput('cardName', 'expiryGroup');
+    showNextInput('expiryDate', 'cvvGroup');
+    showNextInput('cvv', 'addressGroup');
+    showNextInput('streetAddress', 'cityGroup');
+    showNextInput('city', 'stateGroup');
+    showNextInput('state', 'zipGroup');
+    showNextInput('zip', 'countryGroup');
+
+    // Show submit button after the last input
+    document.getElementById('country').addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+            document.getElementById('submitBtn').style.display = 'block';
+        }
+    });
+
+    // Close popup function
+    function closePopup() {
+        document.querySelector('.blur-background').style.display = 'none';
+        document.querySelector('.popup').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
