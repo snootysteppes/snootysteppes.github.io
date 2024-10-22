@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aero SB | Discord SelfBot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column; /* Stack title and subtitle */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem; /* Increased font size */
+            font-weight: 600; /* Bold font weight */
+            color: #ffffff;
+            margin: 10px 0; /* Margin for spacing */
+        }
+
+        .hero h2 {
+            font-size: 2rem; /* Size for "Aero Selfbot" */
+            font-weight: bold;
+            color: #1E90FF; /* Different color for title */
+            margin-bottom: 20px; /* Space between title and subtitle */
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        /* Tile Section */
+        .tiles {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for tiles */
+            justify-content: center; /* Center tiles */
+            margin-top: 20px; /* Space above the tiles */
+            animation: swoop-in 0.5s ease forwards; /* Animation for tiles */
+        }
+
+        .tile {
+            background-color: #1a1a1a; /* Original tile background color */
+            border: 2px solid #1E90FF; /* Add a vibrant border */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); /* Bolder shadow effect */
+            border-radius: 15px; /* Rounded corners */
+            padding: 40px; /* Increased padding for tile content */
+            margin: 20px; /* Space between tiles */
+            width: 280px; /* Increased width for tiles */
+            height: 220px; /* Increased height for tiles */
+            text-align: center; /* Center align text */
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Transition effects */
+            opacity: 0; /* Start hidden for animation */
+            animation: fade-in 0.5s forwards; /* Fade-in animation */
+        }
+
+        .tile:hover {
+            background-color: #333; /* Darker background on hover */
+            transform: scale(1.05); /* Scale effect on hover */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); /* Bolder shadow on hover */
+            border-color: #00bfff; /* Change border color on hover */
+        }
+
+        .tile h3 {
+            font-size: 20px; /* Increased tile title font size */
+            margin-bottom: 10px; /* Space below title */
+        }
+
+        .tile p {
+            font-size: 14px; /* Increased tile text font size */
+            color: #b0b0b0; /* Color for tile text */
+        }
+
+        /* Pricing Section */
+        .pricing {
+            margin-top: 40px; /* Increased margin for spacing */
+            text-align: center;
+            animation: swoop-in 0.5s ease forwards; /* Animation for pricing */
+        }
+
+        .pricing h2 {
+            font-size: 2rem; /* Pricing header size */
+            margin-bottom: 20px; /* Space below header */
+            color: #ffffff; /* Pricing header color */
+        }
+
+        .pricing-plan {
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+            align-items: center; /* Center align items */
+            justify-content: space-between; /* Space between header, content, and button */
+            background-color: #1a1a1a;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px; /* Fixed width for the card */
+            height: 400px; /* Fixed height for the card */
+            margin: 20px auto; /* Center the card horizontally */
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .pricing-plan:hover {
+            background-color: #222;
+            transform: scale(1.05);
+        }
+
+        .pricing-plan h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #1E90FF;
+        }
+
+        .pricing-plan p.price {
+            font-size: 20px;
+            margin: 10px 0; /* Adjusted margin for better spacing */
+            color: #b0b0b0;
+            font-weight: bold; /* Bold price */
+        }
+
+        .pricing-plan ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove padding */
+            margin: 10px 0; /* Add margin for spacing */
+            font-size: 14px; /* Smaller font for bullet points */
+            color: #b0b0b0; /* Color for bullet points */
+        }
+
+        .pricing-plan li {
+            margin: 5px 0; /* Space between bullet points */
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #1E90FF; /* Button background color */
+            color: #fff; /* Button text color */
+            border: none; /* Remove default border */
+            padding: 10px 20px; /* Button padding */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+            font-weight: bold; /* Bold button text */
+            font-size: 16px; /* Button font size */
+            width: 100%; /* Full width for button */
+        }
+
+        button:hover {
+            background-color: #00bfff; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight scale effect */
+        }
+
+        /* FAQ Section */
+        .faq {
+            margin-top: 40px; /* Space above FAQ */
+            animation: swoop-in 0.5s ease forwards; /* Animation for FAQ */
+        }
+
+        .faq h2 {
+            font-size: 2rem; /* FAQ header size */
+            margin-bottom: 20px; /* Space below header */
+            color: #ffffff; /* FAQ header color */
+        }
+
+        .faq-item {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+
+        .faq-item:hover {
+            background-color: #333;
+        }
+
+        .faq-answer {
+            display: none; /* Hide answers by default */
+            padding: 10px 0; /* Space for answer text */
+        }
+
+        .faq-item.active .faq-answer {
+            display: block; /* Show answer when active */
+            animation: fade-in 0.3s ease forwards; /* Fade-in animation */
+        }
+
+        .faq-item .icon {
+            transition: transform 0.3s; /* Transition for icon */
+        }
+
+        .faq-item.active .icon {
+            transform: rotate(45deg); /* Rotate icon when active */
+        }
+
+        /* Animations */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes swoop-in {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="hero">
+            <h1>Aero Self Bot</h1>
+            <h2>Unlock your Discord Potential</h2>
+        </div>
+        <div class="tiles">
+            <div class="tile">
+                <h3>feature 1</h3>
+                <p>Description of feature 1 goes here.</p>
+            </div>
+            <div class="tile">
+                <h3>feature 2</h3>
+                <p>Description of feature 2 goes here.</p>
+            </div>
+            <div class="tile">
+                <h3>feature 3</h3>
+                <p>Description of feature 3 goes here.</p>
+            </div>
+            <div class="tile">
+                <h3>feature 4</h3>
+                <p>Description of feature 4 goes here.</p>
+            </div>
+            <div class="tile">
+                <h3>feature 5</h3>
+                <p>Description of feature 5 goes here.</p>
+            </div>
+            <div class="tile">
+                <h3>feature 6</h3>
+                <p>Description of feature 6 goes here.</p>
+            </div>
+        </div>
+        <div class="pricing">
+            <h2>Pricing Plans</h2>
+            <div class="pricing-plan">
+                <h3>Basic Plan</h3>
+                <p class="price">$5</p>
+                <ul>
+                    <li>Feature 1</li>
+                    <li>Feature 2</li>
+                    <li>Feature 3</li>
+                </ul>
+                <button>Get Started</button>
+            </div>
+        </div>
+        <div class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div>
+                    <h3>What is Aero SB?</h3>
+                    <span class="icon">+</span>
+                </div>
+                <div class="faq-answer">Aero SB is a Discord bot designed to enhance your server experience.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div>
+                    <h3>How do I install it?</h3>
+                    <span class="icon">+</span>
+                </div>
+                <div class="faq-answer">You can install Aero SB by following the instructions on the official website.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div>
+                    <h3>Is it free to use?</h3>
+                    <span class="icon">+</span>
+                </div>
+                <div class="faq-answer">Yes, Aero SB is free to use!</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Particle.js configuration
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 400,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#fff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 10,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": false,
+                    "distance": 500,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 2
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "bottom",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "bubble"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 4,
+                        "duration": 0.3,
+                        "opacity": 1,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // FAQ toggle function
+        function toggleFAQ(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
