@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulating Cookie Theft (Harmless)</title>
+</head>
+<body>
+    <h1>Simulating Malicious XSS Attack (Harmless)</h1>
+    <p>If you see an alert box, it means the script tried to "steal" cookies (but it's harmless here).</p>
+
+    <!-- Form for user input -->
+    <form id="userInputForm">
+        <input type="text" id="userInput" placeholder="Enter something..." />
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Injected Content:</h2>
+    <div id="output"></div>
+
+    <script>
+        // Add event listener to the form
+        document.getElementById('userInputForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting
+
+            // Get the user input (this simulates malicious input like script tags)
+            var userInput = document.getElementById('userInput').value;
+
+            // Display the user input in the output div (simulating reflection of malicious input)
+            document.getElementById('output').innerHTML = userInput;
+
+            // Check if the input contains the "malicious" script (we simulate this scenario)
+            if (userInput.includes("<script>")) {
+                // Simulate "stealing" cookies and displaying them in an alert box
+                var cookies = document.cookie; // Retrieve cookies
+                alert("Simulated 'stolen' cookies: " + cookies); // Show cookies in an alert
+            }
+        });
+    </script>
+</body>
+</html>
