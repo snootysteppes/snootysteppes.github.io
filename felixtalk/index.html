@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .chat-container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox"></div>
+        <input type="text" id="messageInput" placeholder="Type your message" autocomplete="off">
+        <button id="sendMessageButton">Send</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatBox = document.getElementById("chatBox");
+            const messageInput = document.getElementById("messageInput");
+            const sendMessageButton = document.getElementById("sendMessageButton");
+
+            // Load existing messages from localStorage
+            function loadMessages() {
+                const messages = JSON.parse(localStorage.getItem("messages")) || [];
+                chatBox.innerHTML = messages.map(msg => `<div class="message">${msg}</div>`).join('');
+            }
+
+            // Save message to localStorage
+            function saveMessage(message) {
+                const messages = JSON.parse(localStorage.getItem("messages")) || [];
+                messages.push(message);
+                localStorage.setItem("messages", JSON.stringify(messages));
+                loadMessages();
+            }
+
+            // Handle sending a new message
+            sendMessageButton.addEventListener('click', function () {
+                const message = messageInput.value.trim();
+                if (message) {
+                    saveMessage(message);
+                    messageInput.value = "";  // clear the input field
+                }
+            });
+
+            // Allow pressing Enter to send a message
+            messageInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendMessageButton.click();
+                }
+            });
+
+            // Initial load of messages
+            loadMessages();
+        });
+    </script>
+</body>
+</html>
